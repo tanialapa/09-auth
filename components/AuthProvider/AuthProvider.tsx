@@ -19,7 +19,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
     async function verifySession() {
       try {
-        const isSessionValid = await checkSession();
+        const sessionResponse = await checkSession();
+        const isSessionValid = sessionResponse.data.success;
 
         if (!isSessionValid) {
           if (isActive) clearIsAuthenticated();

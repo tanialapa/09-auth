@@ -40,9 +40,8 @@ export async function getMe(): Promise<User> {
   return response.data;
 }
 
-export async function checkSession(cookieHeader?: string): Promise<boolean> {
-  const response = await api.get<{ success: boolean }>("/auth/session", {
-    headers: { Cookie: cookieHeader ?? (await getCookieHeader()) },
+export async function checkSession(refreshToken: string) {
+  return api.get<{ success: boolean }>("/auth/session", {
+    headers: { Cookie: `refreshToken=${refreshToken}` },
   });
-  return response.data.success;
 }
