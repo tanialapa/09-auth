@@ -16,8 +16,8 @@ function copySessionCookies(
     : [setCookieHeader];
 
   for (const cookieHeader of cookieHeaders) {
-    const cookie = parseSetCookie(cookieHeader);
-    response.cookies.set(cookie.name, cookie.value ?? "", cookie);
+    const { name, value, ...options } = parseSetCookie(cookieHeader);
+    response.cookies.set(name, value ?? "", options);
   }
 }
 
@@ -35,7 +35,7 @@ export async function proxy(request: NextRequest) {
 
   if (!accessToken && refreshToken) {
     try {
-      const sessionResponse = await checkSession(refreshToken.value);
+      const sessionResponse = await checkSession();
       isAuthenticated = sessionResponse.data.success;
       refreshedCookies = sessionResponse.headers["set-cookie"];
     } catch {

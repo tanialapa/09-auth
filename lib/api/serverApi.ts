@@ -40,8 +40,10 @@ export async function getMe(): Promise<User> {
   return response.data;
 }
 
-export async function checkSession(refreshToken: string) {
+export async function checkSession() {
+  const cookieStore = await cookies();
+
   return api.get<{ success: boolean }>("/auth/session", {
-    headers: { Cookie: `refreshToken=${refreshToken}` },
+    headers: { Cookie: cookieStore.toString() },
   });
 }
